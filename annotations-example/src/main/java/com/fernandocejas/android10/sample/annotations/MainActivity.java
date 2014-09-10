@@ -12,6 +12,9 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    /** Check {@link DataPresenter} for seeing the annotations example. */
     dataPresenter.doSomethingOne();
+    dataPresenter.doSomethingTwo();
+    dataPresenter.doSomethingThree();
   }
 }
