@@ -4,15 +4,18 @@
  */
 package com.fernandocejas.android10.sample.annotations;
 
-import com.fernandocejas.android10.library.annotation.DebugTrace;
+import com.fernandocejas.android10.library.annotation.Loggable;
+import com.fernandocejas.android10.library.annotation.Traceable;
 
+@Traceable
 public class DataPresenter {
 
-  @DebugTrace
+  @Loggable
   public void doSomethingOne() {
     sleep(5);
   }
 
+  @Loggable
   public void doSomethingTwo() {
     sleep(5);
   }

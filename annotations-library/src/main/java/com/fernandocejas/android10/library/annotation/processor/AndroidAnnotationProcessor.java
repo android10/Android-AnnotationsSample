@@ -4,23 +4,25 @@
  */
 package com.fernandocejas.android10.library.annotation.processor;
 
-import com.fernandocejas.android10.library.annotation.DebugTrace;
+import com.fernandocejas.android10.library.annotation.handler.AnnotationHandler;
+import com.fernandocejas.android10.library.annotation.handler.AnnotationHandlerFactory;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 
 public class AndroidAnnotationProcessor extends AbstractProcessor {
 
   private final AnnotationProcessorHelper annotationProcessorHelper;
+  private final AnnotationHandlerFactory annotationHandlerFactory;
 
   public AndroidAnnotationProcessor() {
     super();
     this.annotationProcessorHelper = new AnnotationProcessorHelper();
+    this.annotationHandlerFactory = new AnnotationHandlerFactory();
   }
 
   @Override public SourceVersion getSupportedSourceVersion() {
@@ -28,41 +30,20 @@ public class AndroidAnnotationProcessor extends AbstractProcessor {
   }
 
   @Override public Set<String> getSupportedAnnotationTypes() {
-    return this.annotationProcessorHelper.getSupportedAnnotations();
+    return this.annotationProcessorHelper.getSupportedAnnotationTypes();
   }
 
   @Override public boolean process(Set<? extends TypeElement> typeElements,
       RoundEnvironment roundEnvironment) {
 
-    for (Element element : roundEnvironment.getElementsAnnotatedWith(DebugTrace.class)) {
-      if (isValidElement(element)) {
-        String methodName = element.getSimpleName().toString();
-        String message =
-            "Debug trace annotation found!!!" + "in " + methodName + " " + element.getKind().name();
-        this.printMessage(message);
-      } else {
-        throw new RuntimeException("Unsupported modifier for element of type: "
-            + element.getKind().name()
-            + " in "
-            + element.getSimpleName().toString());
+    for (Class<? extends Annotation> annotation : this.annotationProcessorHelper.getSupportedAnnotationClasses()) {
+      for (Element element : roundEnvironment.getElementsAnnotatedWith(annotation)) {
+        AnnotationHandler annotationHandler = this.annotationHandlerFactory.create(annotation);
+        if (annotationHandler != null) {
+          annotationHandler.process(processingEnv, element);
+        }
       }
     }
     return true;
-  }
-
-  private boolean isValidElement(Element element) {
-    boolean isValid = false;
-    Set<Modifier> modifiers = element.getModifiers();
-
-    if (modifiers != null) {
-      isValid = !(modifiers.contains(Modifier.FINAL) || modifiers.contains(Modifier.STATIC) ||
-          modifiers.contains(Modifier.ABSTRACT));
-    }
-
-    return isValid;
-  }
-
-  private void printMessage(String message) {
-    processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, message);
   }
 }
