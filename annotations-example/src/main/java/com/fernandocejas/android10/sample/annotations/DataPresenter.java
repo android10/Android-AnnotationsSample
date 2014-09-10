@@ -4,17 +4,21 @@
  */
 package com.fernandocejas.android10.sample.annotations;
 
+import android.content.Context;
+import android.widget.Toast;
 import com.fernandocejas.android10.library.annotation.Loggable;
 import com.fernandocejas.android10.library.annotation.Traceable;
 
 @Traceable
 public class DataPresenter {
 
+  private final Context context;
+
   @Traceable
   private String name = "android10.org";
 
-  public DataPresenter() {
-
+  public DataPresenter(Context context) {
+    this.context = context.getApplicationContext();
   }
 
   @Traceable
@@ -24,12 +28,14 @@ public class DataPresenter {
 
   @Loggable
   public void doSomethingTwo() {
-    this.name = "fernandocejas.com";
+    Toast.makeText(this.context, "Yeah!!! Done using reflection on methods with @Loggable annotion",
+        Toast.LENGTH_LONG).show();
   }
 
   @Loggable
   public void doSomethingThree() {
-    sleep(5);
+    Toast.makeText(this.context, "Yeah!!! Done using reflection on methods with @Loggable annotion",
+        Toast.LENGTH_LONG).show();
   }
 
   @Loggable

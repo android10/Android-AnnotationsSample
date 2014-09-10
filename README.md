@@ -5,6 +5,9 @@ This is a simple sample on how to use annotations with Android/Java.
 It has an annotation processor that shows how to process annotations at compile time. 
 Also there is an example on how to process annotations at runtime.
 
+-When compiling using the terminal you will see messages about annotation processing.
+-At runtime you execute the application and you will see messages on the logcat screen.
+
 
 Local Development
 -----------------
