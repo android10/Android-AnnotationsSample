@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+dependencies {
+  compile 'com.google.android:android:4.1.1.4'
+  compile 'com.squareup:javawriter:2.5.0'
+
+  testCompile 'junit:junit:4.11'
+  testCompile 'org.mockito:mockito-all:1.9.5'
+  testCompile 'com.google.testing.compile:compile-testing:0.5'
+}
